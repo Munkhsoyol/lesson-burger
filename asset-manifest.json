@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/lesson-burger/static/css/main.72922965.chunk.css",
+    "main.js": "/lesson-burger/static/js/main.30689722.chunk.js",
+    "main.js.map": "/lesson-burger/static/js/main.30689722.chunk.js.map",
+    "runtime-main.js": "/lesson-burger/static/js/runtime-main.33945b6a.js",
+    "runtime-main.js.map": "/lesson-burger/static/js/runtime-main.33945b6a.js.map",
+    "static/js/2.d4d8e97b.chunk.js": "/lesson-burger/static/js/2.d4d8e97b.chunk.js",
+    "static/js/2.d4d8e97b.chunk.js.map": "/lesson-burger/static/js/2.d4d8e97b.chunk.js.map",
+    "index.html": "/lesson-burger/index.html",
+    "precache-manifest.61a81b159c0b7bd957f61214fcbc14be.js": "/lesson-burger/precache-manifest.61a81b159c0b7bd957f61214fcbc14be.js",
+    "service-worker.js": "/lesson-burger/service-worker.js",
+    "static/css/main.72922965.chunk.css.map": "/lesson-burger/static/css/main.72922965.chunk.css.map",
+    "static/js/2.d4d8e97b.chunk.js.LICENSE.txt": "/lesson-burger/static/js/2.d4d8e97b.chunk.js.LICENSE.txt",
+    "static/media/burger-logo.png": "/lesson-burger/static/media/burger-logo.b8503d26.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.33945b6a.js",
+    "static/js/2.d4d8e97b.chunk.js",
+    "static/css/main.72922965.chunk.css",
+    "static/js/main.30689722.chunk.js"
+  ]
+}

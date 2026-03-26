@@ -34,7 +34,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadOrders: (userId) => dispatch(actions.loadOrders(userId))
+    loadOrders: userId => dispatch(actions.loadOrders(userId))
   };
 };
 

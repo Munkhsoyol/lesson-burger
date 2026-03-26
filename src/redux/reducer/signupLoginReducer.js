@@ -48,7 +48,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         logginIn: false,
-        token: action.idToken,
+        token: action.token,
         userId: action.userId
       };
 

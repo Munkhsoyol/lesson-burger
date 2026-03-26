@@ -17,8 +17,7 @@ export const loginUser = (email, password) => {
         data
       )
       .then(result => {
-
-        // LocalStorage
+        // LocalStorage ruu hadgalna
         const token = result.data.idToken;
         const userId = result.data.localId;
         const expiresIn = result.data.expiresIn;

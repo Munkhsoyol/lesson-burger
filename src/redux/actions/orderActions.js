@@ -1,13 +1,12 @@
 import axios from "../../axios-orders";
 
-export const loadOrders = () => {
+export const loadOrders = userId => {
   return function(dispatch, getState) {
     // Захиалгыг татаж эхлэлээ гэдгийг мэдэгдэнэ.
     // Энийг хүлээж аваад Spinner ажиллаж эхлэнэ.
     dispatch(loadOrdersStart());
 
     const token = getState().signupReducer.token;
-    const userId = getState().signupReducer.userId;
 
     axios
       .get(`orders.json?&auth=${token}&orderBy="userId"&equalTo="${userId}"`)

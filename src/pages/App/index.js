@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import css from "./style.module.css";
-import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import css from "./style.module.css";
 
 import Toolbar from "../../components/Toolbar";
 import BurgerPage from "../BurgerPage";
@@ -35,11 +35,16 @@ class App extends Component {
 
     if (token) {
       if (expireDate > new Date()) {
+        // Hugatsaa n duusaaagui token baina, avtomat login hiine
         this.props.autoLogin(token, userId);
+
+        // Token huchingui bolohod uldej baigaa hugatsaag tootsoolj
+        // Ter hugatsaanii daraa avtomataar logout hiine
         this.props.autoLogoutAfterMillisec(
-          expireDate.getDate() - new Date().getTime()
+          expireDate.getTime() - new Date().getTime()
         );
       } else {
+        // Token hugatsaa n duussan bainaa, logout hiine
         this.props.logout();
       }
     }
@@ -56,7 +61,6 @@ class App extends Component {
         />
 
         <main className={css.Content}>
-          
           {this.props.userId ? (
             <Switch>
               <Route path="/logout" component={Logout} />
@@ -71,7 +75,6 @@ class App extends Component {
               <Redirect to="/login" />
             </Switch>
           )}
-
         </main>
       </div>
     );
@@ -86,9 +89,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    autoLogin: (token, userId) => dispatch(actions.loginUserSuccess(token, userId)),
+    autoLogin: (token, userId) =>
+      dispatch(actions.loginUserSuccess(token, userId)),
     logout: () => dispatch(signupActions.logout()),
-    autoLogoutAfterMillisec: () => dispatch(signupActions.autoLogoutAfterMillisec())
+    autoLogoutAfterMillisec: () =>
+      dispatch(signupActions.autoLogoutAfterMillisec())
   };
 };
 

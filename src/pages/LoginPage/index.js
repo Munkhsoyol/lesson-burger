@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState, useContext } from "react";
 import Button from "../../components/General/Button";
 import css from "./style.module.css";
-import * as actions from "../../redux/actions/loginActions";
 import Spinner from "../../components/General/Spinner";
 import { Redirect } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 const Login = props => {
+  const userContext = useContext(UserContext);
   const [form, setForm] = useState({
     email: "",
     password: "12"
@@ -29,7 +29,7 @@ const Login = props => {
   };
 
   const login = () => {
-    props.login(form.email, form.password);
+    userContext.loginUser(form.email, form.password);
   };
 
   return (
@@ -37,10 +37,10 @@ const Login = props => {
       {props.userId && <Redirect to="/orders" />}
       <input onChange={changeEmail} type="text" placeholder="Имэйл хаяг" />
       <input onChange={changePassword} type="password" placeholder="Нууц үг" />
-      {props.logginIn && <Spinner />}
-      {props.firebaseError && (
+      {userContext.state.logginIn && <Spinner />}
+      {userContext.state.error && (
         <div style={{ color: "red" }}>
-          {props.firebaseError} код нь : {props.firebaseErrorCode}
+          {userContext.state.error} код нь : {userContext.state.error}
         </div>
       )}
       <Button text="ЛОГИН" btnType="Success" daragdsan={login} />
@@ -48,19 +48,4 @@ const Login = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    logginIn: state.signupReducer.logginIn,
-    firebaseError: state.signupReducer.firebaseError,
-    firebaseErrorCode: state.signupReducer.firebaseErrorCode,
-    userId: state.signupReducer.userId
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    login: (email, password) => dispatch(actions.loginUser(email, password))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

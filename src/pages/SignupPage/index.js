@@ -41,8 +41,8 @@ const Signup = (props) => {
       />
       {error && <div style={{ color: "red" }}>{error}</div>}
 
-      {userContext.state.firebaseError && (
-        <div style={{ color: "red" }}>{userContext.state.firebaseError}</div>
+      {userContext.state.error && (
+        <div style={{ color: "red" }}>{userContext.state.errorCode}</div>
       )}
 
       {userContext.state.saving && <Spinner />}

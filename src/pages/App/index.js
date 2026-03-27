@@ -13,7 +13,7 @@ import * as actions from "../../redux/actions/loginActions";
 import * as signupActions from "../../redux/actions/signupActions";
 
 // Context
-import BurgerContext from "../../context/BurgerContext";
+import { BurgerStore } from "../../context/BurgerContext";
 
 // Lazy
 const BurgerPage = React.lazy(() => {
@@ -73,12 +73,12 @@ const App = (props) => {
             <Switch>
               <Route path="/logout" component={Logout} />
               <Route path="/orders" component={OrderPage} />
-              <Route path="/ship" component={ShippingPage} />
-              <Route path="/">
-                <BurgerContext.Provider value={"" + showSidebar}>
-                  <BurgerPage />
-                </BurgerContext.Provider>
-              </Route>
+
+              <BurgerStore>
+                <Route path="/ship" component={ShippingPage} />
+                <Route path="/" component={BurgerPage} />
+              </BurgerStore>
+              
             </Switch>
           ) : (
             <Switch>

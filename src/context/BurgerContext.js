@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 const BurgerContext =  React.createContext();
 
+// Named export
 export const BurgerStore = (props) => {
     const [ingredients, setIngredients] = useState({
         salad: 0,
@@ -11,20 +12,26 @@ export const BurgerStore = (props) => {
     });
 
     const addIngredient = (orts) => {
-        console.log("add ...");
+        setIngredients({
+            ...ingredients,
+            [orts]: ingredients[orts] + 1
+        });
     };
 
     const removeIngredient = (orts) => {
-        console.log("remove ...");
+        setIngredients({
+            ...ingredients,
+            [orts]: ingredients[orts] - 1
+        });
     };
 
     return (
         <BurgerContext.Provider 
-            value={(
+            value={{
                 ingredients,
                 addIngredient,
                 removeIngredient
-            )}
+            }}
         >
             {props.children}
         </BurgerContext.Provider>

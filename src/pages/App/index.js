@@ -1,6 +1,5 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
 import css from "./style.module.css";
 
 import Toolbar from "../../components/Toolbar";
@@ -9,12 +8,11 @@ import { Route, Switch } from "react-router-dom";
 import ShippingPage from "../ShippingPage";
 import LoginPage from "../LoginPage";
 import Logout from "../../components/Logout";
-import * as actions from "../../redux/actions/loginActions";
-import * as signupActions from "../../redux/actions/signupActions";
 
 // Context
 import { BurgerStore } from "../../context/BurgerContext";
 import { OrderStore } from "../../context/OrdersContext";
+import UserContext from "../../context/UserContext";
 
 // Lazy
 const BurgerPage = React.lazy(() => {
@@ -30,34 +28,35 @@ const SignupPage = React.lazy(() => {
 });
 
 const App = (props) => {
+  const userContext = useContext(UserContext);
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleSideBar = () => {
     setShowSidebar(prevshowSidebar => !prevshowSidebar);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-    const expireDate = new Date(localStorage.getItem("expireDate"));
-    const refreshToken = localStorage.getItem("refreshToken");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const userId = localStorage.getItem("userId");
+  //   const expireDate = new Date(localStorage.getItem("expireDate"));
+  //   const refreshToken = localStorage.getItem("refreshToken");
 
-    if (token) {
-      if (expireDate > new Date()) {
-        // Hugatsaa n duusaaagui token baina, avtomat login hiine
-        props.autoLogin(token, userId);
+  //   if (token) {
+  //     if (expireDate > new Date()) {
+  //       // Hugatsaa n duusaaagui token baina, avtomat login hiine
+  //       props.autoLogin(token, userId);
 
-        // Token huchingui bolohod uldej baigaa hugatsaag tootsoolj
-        // Ter hugatsaanii daraa avtomataar logout hiine
-        props.autoLogoutAfterMillisec(
-          expireDate.getTime() - new Date().getTime()
-        );
-      } else {
-        // Token hugatsaa n duussan bainaa, logout hiine
-        props.logout();
-      }
-    }
-  }, []);
+  //       // Token huchingui bolohod uldej baigaa hugatsaag tootsoolj
+  //       // Ter hugatsaanii daraa avtomataar logout hiine
+  //       props.autoLogoutAfterMillisec(
+  //         expireDate.getTime() - new Date().getTime()
+  //       );
+  //     } else {
+  //       // Token hugatsaa n duussan bainaa, logout hiine
+  //       props.logout();
+  //     }
+  //   }
+  // }, []);
 
   return (
     <div>
@@ -71,7 +70,7 @@ const App = (props) => {
       <main className={css.Content}>
         <BurgerStore>
           <Suspense fallback={<div>Түр хүлээнэ үү...</div>}>
-            {props.userId ? (
+            {userContext.state.userId ? (
               <Switch>
                 <Route path="/logout" component={Logout} />
 
@@ -99,20 +98,14 @@ const App = (props) => {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    userId: state.signupReducer.userId
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     autoLogin: (token, userId) =>
+//       dispatch(actions.loginUserSuccess(token, userId)),
+//     logout: () => dispatch(signupActions.logout()),
+//     autoLogoutAfterMillisec: () =>
+//       dispatch(signupActions.autoLogoutAfterMillisec())
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    autoLogin: (token, userId) =>
-      dispatch(actions.loginUserSuccess(token, userId)),
-    logout: () => dispatch(signupActions.logout()),
-    autoLogoutAfterMillisec: () =>
-      dispatch(signupActions.autoLogoutAfterMillisec())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

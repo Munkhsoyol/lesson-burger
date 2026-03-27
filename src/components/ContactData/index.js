@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import css from "./style.module.css";
 import Button from "../General/Button";
 import Spinner from "../General/Spinner";
-import axios from "../../axios-orders";
 import { withRouter } from "react-router-dom";
-import * as actions from "../../redux/actions/orderActions";
+
+// Context
+import BurgerContext from "../../context/BurgerContext";
 
 const ContactData = props => {
+
+  const burgerContext = useContext(BurgerContext);
+
   const [name, setName] = useState();
   const [city, setCity] = useState();
   const [street, setStreet] = useState();
@@ -15,14 +18,14 @@ const ContactData = props => {
   const dunRef = useRef();
 
   useEffect(() => {
-    if (props.newOrderStatus.finished && !props.newOrderStatus.error) {
+    if (burgerContext.burger.finished && !burgerContext.burger.error) {
       props.history.replace("/orders");
     }
 
     return () => {
-      props.clearOrder();
+      burgerContext.clearBurger();
     };
-  }, [props.newOrderStatus.finished]);
+  }, [burgerContext.burger.finished]);
 
   const changeName = e => {
     if (dunRef.current.style.color === "red")
@@ -42,9 +45,9 @@ const ContactData = props => {
 
   const saveOrder = () => {
     const newOrder = {
-      userId: props.userId,
-      orts: props.ingredients,
-      dun: props.price,
+      userId: "props.userId",
+      orts: burgerContext.burger.ingredients,
+      dun: burgerContext.burger.totalPrice,
       hayag: {
         name,
         city,
@@ -52,19 +55,19 @@ const ContactData = props => {
       }
     };
 
-    props.saveOrderAction(newOrder);
+    burgerContext.saveBurger(newOrder);
   };
 
   return (
     <div className={css.ContactData}>
       <div ref={dunRef}>
-        <strong style={{ fontSize: "16px" }}>Дүн : {props.price}₮</strong>
+        <strong style={{ fontSize: "16px" }}>Дүн : {burgerContext.burger.totalPrice}₮</strong>
       </div>
       <div>
-        {props.newOrderStatus.error &&
-          `Захиалгыг хадгалах явцад алдаа гарлаа : ${props.newOrderStatus.error}`}
+        {burgerContext.burger.error &&
+          `Захиалгыг хадгалах явцад алдаа гарлаа : ${burgerContext.burger.error}`}
       </div>
-      {props.newOrderStatus.saving ? (
+      {burgerContext.burger.saving ? (
         <Spinner />
       ) : (
         <div>
@@ -93,23 +96,4 @@ const ContactData = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    price: state.burgerReducer.totalPrice,
-    ingredients: state.burgerReducer.ingredients,
-    newOrderStatus: state.orderReducer.newOrder,
-    userId: state.signupReducer.userId
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    saveOrderAction: newOrder => dispatch(actions.saveOrder(newOrder)),
-    clearOrder: () => dispatch(actions.clearOrder())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(ContactData));
+export default withRouter(ContactData);

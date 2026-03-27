@@ -1,12 +1,17 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useContext } from "react";
 import Burger from "../../components/Burger";
 import Button from "../../components/General/Button";
 import { Route } from "react-router-dom";
 import css from "./style.module.css";
 import ContactData from "../../components/ContactData";
 
+// Context
+import BurgerContext from "../../context/BurgerContext";
+
 const ShippingPage = props => {
+
+  const burgerContext = useContext(BurgerContext);
+
   const cancelOrder = () => {
     props.history.goBack();
   };
@@ -21,7 +26,7 @@ const ShippingPage = props => {
         <strong>Таны захиалга амттай байх болно гэж найдаж байна...</strong>
       </p>
       <p style={{ fontSize: "24px" }}>
-        <strong>Дүн : {props.price}₮</strong>
+        <strong>Дүн : {burgerContext.burger.totalPrice}₮</strong>
       </p>
 
       <Burger />
@@ -45,10 +50,4 @@ const ShippingPage = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    price: state.burgerReducer.totalPrice
-  };
-};
-
-export default connect(mapStateToProps)(ShippingPage);
+export default ShippingPage;

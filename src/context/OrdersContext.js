@@ -13,7 +13,7 @@ const initialState = {
 export const OrderStore = (props) => {
     const [state, setState] = useState( initialState );
 
-    const loadOrders = () => {
+    const loadOrders = (userId, token) => {
         // Захиалгыг татаж эхлэлээ гэдгийг мэдэгдэнэ.
         // Энийг хүлээж аваад Spinner ажиллаж эхлэнэ.
         setState({
@@ -21,11 +21,8 @@ export const OrderStore = (props) => {
             loading: true
         });
 
-        // const token = getState().signupReducer.token;
-
         axios
-            .get(`orders.json`)
-            // .get(`orders.json?&auth=${token}&orderBy="userId"&equalTo="${userId}"`)
+            .get(`orders.json?&auth=${token}&orderBy="userId"&equalTo="${userId}"`)
             .then(response => {
                 const loadedOrders = Object.entries(response.data).reverse();
                 setState({

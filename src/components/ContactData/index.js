@@ -6,10 +6,13 @@ import { useHistory } from "react-router-dom";
 
 // Context
 import BurgerContext from "../../context/BurgerContext";
+import UserContext from "../../context/UserContext";
 
 const ContactData = props => {
   const history = useHistory();
+
   const burgerContext = useContext(BurgerContext);
+  const userContext = useContext(UserContext);
 
   const [name, setName] = useState();
   const [city, setCity] = useState();
@@ -45,7 +48,7 @@ const ContactData = props => {
 
   const saveOrder = () => {
     const newOrder = {
-      userId: "props.userId",
+      userId: userContext.state.userId,
       orts: burgerContext.burger.ingredients,
       dun: burgerContext.burger.totalPrice,
       hayag: {
@@ -55,7 +58,7 @@ const ContactData = props => {
       }
     };
 
-    burgerContext.saveBurger(newOrder);
+    burgerContext.saveBurger(newOrder, userContext.state.token);
   };
 
   return (

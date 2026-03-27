@@ -5,13 +5,18 @@ import Order from "../../components/Order";
 
 // Contect
 import OrderContext from "../../context/OrdersContext";
+import UserContext from "../../context/UserContext";
 
 const  OrderPage = (props) => {
   useEffect(() => {
-    orderContext.loadOrders("props.userId");
+    orderContext.loadOrders(
+      userContext.state.userId,
+      userContext.state.token
+    );
   }, []);
 
   const orderContext = useContext(OrderContext);
+  const userContext = useContext(UserContext);
 
   return (
     <div>
@@ -22,7 +27,6 @@ const  OrderPage = (props) => {
       )}
     </div>
   );
-
 }
 
 export default OrderPage;

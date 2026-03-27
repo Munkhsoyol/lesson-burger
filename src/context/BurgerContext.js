@@ -30,16 +30,13 @@ export const BurgerStore = (props) => {
     const [burger, setBurger] = useState( initialState );
 
     // Захиалгыг хадгалах
-    const saveBurger = (newOrder) => {
+    const saveBurger = (newOrder, token) => {
         // Spinner ergelduulne
         setBurger({ ...burger, saving: true });
 
-        // const token = getState().signupReducer.token;
-
         // Firebase ruu hadgalna
         axios
-            .post(`/orders.json`, newOrder)
-            // .post(`/orders.json?auth=${token}`, newOrder)
+            .post(`/orders.json?auth=${token}`, newOrder)
             .then(response => {
                 setBurger({ 
                     ...burger, 

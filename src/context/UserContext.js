@@ -16,6 +16,22 @@ const initialState = {
 export const UserStore = (props) => {
     const [state, setState] = useState( initialState );
 
+    const loginUserSuccess = (token, userId, expireDate, refreshToken) => {
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("expireDate", expireDate);
+        localStorage.setItem("refreshToken", refreshToken);
+
+        setState({
+            ...state,
+            logginIn: false,
+            error: null,
+            errorCode: null,
+            token,
+            userId
+        });
+    }
+
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
@@ -80,19 +96,7 @@ export const UserStore = (props) => {
             const expireDate = new Date(new Date().getTime() + expiresIn * 1000);
             const refreshToken = result.data.refreshToken;
 
-            localStorage.setItem("token", token);
-            localStorage.setItem("userId", userId);
-            localStorage.setItem("expireDate", expireDate);
-            localStorage.setItem("refreshToken", refreshToken);
-
-            setState({
-                ...state,
-                logginIn: false,
-                error: null,
-                errorCode: null,
-                token,
-                userId
-            });
+            loginUserSuccess(token, userId, expireDate, refreshToken);
             // dispatch(actions.autoLogoutAfterMillisec(expiresIn * 1000));
         })
         .catch(err => {
@@ -158,7 +162,8 @@ export const UserStore = (props) => {
                 state,
                 loginUser,
                 signupUser,
-                logout
+                logout,
+                loginUserSuccess
             }}
         >
             {props.children}

@@ -49,12 +49,14 @@ const App = (props) => {
 
         // Token huchingui bolohod uldej baigaa hugatsaag tootsoolj
         // Ter hugatsaanii daraa avtomataar logout hiine
-        // props.autoLogoutAfterMillisec(
-        //   expireDate.getTime() - new Date().getTime()
-        // );
+        userContext.autoRenewTokenAfterMillisec(
+          expireDate.getTime() - new Date().getTime()
+        );
       } else {
         // Token hugatsaa n duussan bainaa, logout hiine
-        userContext.logout();
+        // userContext.logout();
+        // Token shinechlel hiine auto login
+        userContext.autoRenewTokenAfterMillisec(3600*1000);
       }
     }
   }, []);

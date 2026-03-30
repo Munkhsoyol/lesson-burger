@@ -40,39 +40,34 @@ export const UserStore = (props) => {
         setState( initialState );
     };
 
-    // const autoLogoutAfterMillisec = ms => {
-    //     // token shinechleh code
-    //     // axios
-    //     //   .post(
-    //     //     "https://securetoken.googleapis.com/v1/token?key=AIzaSyCEmDZW6k2XJlQritKoYeJG14ExYa1rRSM",
-    //     //     {d
-    //     //       grant_type: "refresh_token",
-    //     //       refresh_token: localStorage.get("refresh_token")
-    //     //     }
-    //     //   )
-    //     //   .then(result => {
-    //     //     const token = result.data.id_token;
-    //     //     const userId = result.data.user_id;
-    //     //     const token = result.data.idToken;
-    //     //     const userId = result.data.localId;
-    //     //     const expiresIn = result.data.expiresIn;
-    //     //     const expireDate = new Date(new Date().getTime() + expiresIn * 1000);
-    //     //     const refreshToken = result.data.refreshToken;
-    //     //     localStorage.setItem("token", token);
-    //     //     localStorage.setItem("userId", userId);
-    //     //     localStorage.setItem("expireDate", expireDate);
-    //     //     localStorage.setItem("refreshToken", refreshToken);
-    //     //     dispatch(loginUserSuccess(token, userId));
-    //     //   })
-    //     //   .catch(err => {
-    //     //     dispatch(signupUserError(err));
-    //     //   });
+    const autoRenewTokenAfterMillisec = milliSec => {
+        // token shinechleh code
+        axios
+          .post(
+            "https://securetoken.googleapis.com/v1/token?key=AIzaSyBqkebQqbHIte_vebln1Ybxws6LyvfqrmM",
+            {
+              grant_type: "refresh_token",
+              refresh_token: localStorage.getItem("refreshToken")
+            }
+          )
+          .then((result) => {
+            const token = result.data.id_token;
+            const userId = result.data.user_id;
+            const expiresIn = result.data.expires_in;
+            const expireDate = new Date(new Date().getTime() + expiresIn * 1000);
+            const refreshToken = result.data.refresh_token;
+
+            loginUserSuccess(token, userId, expireDate, refreshToken);
+          })
+          .catch(err => {
+            // dispatch(signupUserError(err));
+          });
     
-    //     // avtomat logout
-    //     setTimeout(() => {
-    //       dispatch(logout());
-    //     }, ms);
-    // };
+        // avtomat logout
+        setTimeout(() => {
+          autoRenewTokenAfterMillisec(3600*1000);
+        }, milliSec);
+    };
 
     const loginUser = (email, password) => {
         setState({ ...state, logginIn: true });
@@ -97,7 +92,6 @@ export const UserStore = (props) => {
             const refreshToken = result.data.refreshToken;
 
             loginUserSuccess(token, userId, expireDate, refreshToken);
-            // dispatch(actions.autoLogoutAfterMillisec(expiresIn * 1000));
         })
         .catch(err => {
             setState({
@@ -163,7 +157,8 @@ export const UserStore = (props) => {
                 loginUser,
                 signupUser,
                 logout,
-                loginUserSuccess
+                loginUserSuccess,
+                autoRenewTokenAfterMillisec
             }}
         >
             {props.children}
